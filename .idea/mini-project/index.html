@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!--    index.html - всі блоки з user - по 2 в рядок. кнопки/посилання розташувати
+   під інформацією про user.-->
+</head>
+<body>
+<style>
+  body {
+    background-color: lightgreen;
+  }
+  .aaa{
+    width: auto;
+    border: ridge #ccc;
+    border-width: 6px;
+    background-color:darkcyan ;
+  }
+  .ppp{
+    color: blue;
+    font-family: Cambria;
+  }
+  .div{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+</style>
+
+
+<!--В index.html-->
+<!--1 отримати масив об'єктів з endpoint`а https://jsonplaceholder.typicode.com/users-->
+<!--2 Вивести id,name всіх user в index.html. Окремий блок для кожного user.-->
+<!--3 Додати кожному блоку кнопку/посилання , при кліку на яку відбувається перехід  на сторінку user-details.html, котра має детальну інфорацію про об'єкт на який клікнули-->
+<script>
+  let url = new URL(`https://jsonplaceholder.typicode.com/users`);
+  fetch(url)
+          .then(value => value.json())
+          .then(users => {
+            for (const user of users) {
+
+              let div = document.createElement(`div`);
+              div.classList.add('div');
+
+              let p = document.createElement(`p`)
+              p.innerText = `${user.name}`;
+              p.classList.add('ppp');
+
+              let a = document.createElement(`a`);
+              a.innerText = `More-Info`;
+              a.href = `user-details.html?data=` + JSON.stringify(user);
+              a.classList.add('aaa');
+
+              div.append(p,a);
+              document.body.appendChild(div);
+            }
+          });
+</script>
+</body>
+</html>

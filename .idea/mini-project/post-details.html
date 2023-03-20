@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            font-family: Cambria;
+            background-color: darkmagenta;
+        }
+        .hhh {
+            width: auto;
+            border: ridge #ccc;
+            background-color: darkslateblue;
+        }
+        .ppp {
+            width: auto;
+            border: ridge #ccc;
+            background-color: darkslateblue;
+        }
+        .h2{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            background-color: #cccccc;
+        }
+        .h3{
+            width: auto;
+            border: ridge #ccc;
+            border-width: 6px;
+            background-color:darkcyan ;
+        }
+        .p{
+            width: auto;
+            border: ridge #ccc;
+            border-width: 6px;
+            background-color:darkcyan ;
+        }
+    </style>
+</head>
+<body>
+<script>
+    // 7 Вивести всю, без виключення, інформацію про об'єкт post на який клікнули .
+    let url = new URL(location.href);
+    let json = url.searchParams.get(`data`);
+    let post = JSON.parse(json);
+    console.log(post);
+
+    let postBlocks = document.createElement('div');
+    let head = document.createElement('h2');
+    head.classList.add('hhh');
+    head.innerText = post.title;
+
+    let p = document.createElement('p');
+    p.innerText = `UserID: ${post.userId}
+    ID: ${post.id}
+    Post data: ${post.body}`;
+    p.classList.add('ppp');
+
+    postBlocks.append(head ,p);
+    document.body.appendChild(postBlocks);
+
+    // 8 Нижчє інформаці про пост, вивести всі коментарі поточного поста (ендпоінт  - https://jsonplaceholder.typicode.com/posts/POST_ID/comments)
+    let url1 = new URL(`https://jsonplaceholder.typicode.com/posts/${post.id}/comments`);
+    document.body.insertAdjacentHTML("beforeend",
+    `<h2 class="h2">Comments of current post</h2>`)
+    fetch(url1)
+        .then(value => value.json())
+        .then(comments => {
+            for (const comment of comments) {
+                document.body.insertAdjacentHTML("beforeend",
+                    `
+            <div>
+                <h3 class="h3">Post name: ${comment.name},Post ID: ${comment.postId},ID: ${comment.id},Email: ${comment.email}</h3>
+                <p class="p">Content: ${comment.body}</p>
+            </div>
+            `
+                )
+            }
+        });
+</script>
+</body>
+</html>
